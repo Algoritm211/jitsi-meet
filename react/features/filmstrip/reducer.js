@@ -117,14 +117,10 @@ ReducerRegistry.register(
                 horizontalViewDimensions: action.dimensions
             };
         case SET_REMOTE_PARTICIPANTS: {
+            const { visibleParticipantsStartIndex: startIndex, visibleParticipantsEndIndex: endIndex } = state;
+
             state.remoteParticipants = action.participants;
-
-            // TODO: implement this on mobile.
-            if (navigator.product !== 'ReactNative') {
-                const { visibleParticipantsStartIndex: startIndex, visibleParticipantsEndIndex: endIndex } = state;
-
-                state.visibleRemoteParticipants = new Set(state.remoteParticipants.slice(startIndex, endIndex));
-            }
+            state.visibleRemoteParticipants = new Set(state.remoteParticipants.slice(startIndex, endIndex));
 
             return { ...state };
         }
@@ -166,7 +162,9 @@ ReducerRegistry.register(
             }
             delete state.participantsVolume[id];
 
-            return state;
+            return {
+                ...state
+            };
         }
         }
 
